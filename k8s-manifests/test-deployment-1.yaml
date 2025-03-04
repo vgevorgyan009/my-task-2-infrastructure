@@ -1,39 +1,40 @@
-apiVersion : apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-web-deployment
+  name: myapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   labels:
-    app : my-k8s-deployment
+    app: myapp
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      project: kgb
+      app: myapp
   template:
     metadata:
       labels:
-        project: kgb   # Service will look for those PODS Labels!!!
+        app: myapp
     spec:
+      imagePullSecrets:
+        - name: aws-registry-key
       containers:
-        - name : kgb-web
-          image: adv4000/k8sphp:latest
-          ports:
-            - containerPort: 80
+      - name: myapp
+        image: 891376912861.dkr.ecr.eu-central-1.amazonaws.com/java-maven-app:872
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-single-pod-service
-  labels:
-    env  : prod
-    owner: DenisAstahov
+  name: myapp
 spec:
   selector:
-    project: kgb    # Selecting PODS with those Labels
-  ports:
-    - name      : app-listener
-      protocol  : TCP
-      port      : 80  # Port on Load Balancer
-      targetPort: 80  # Port on POD
+    app: myapp
   type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
