@@ -1,0 +1,9 @@
+apiVersion: v2
+name       : MyApp-HelmChart
+description: My Helm chart for Kubernetes
+type       : application
+version    : 0.1.0
+
+maintainers:
+  - name : Vardan Gevorgyan
+    email: myemail@gmail.com
