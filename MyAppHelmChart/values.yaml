@@ -1,7 +1,7 @@
 # Default Values for my Helm Chart
 
 container:
-  image: 891376912861.dkr.ecr.eu-central-1.amazonaws.com/java-maven-app:1.1.14
+  image: 891376912861.dkr.ecr.eu-central-1.amazonaws.com/java-maven-app:1.1.15
 
 minReplicas: 3
 maxReplicas: 6
